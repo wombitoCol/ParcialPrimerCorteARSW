@@ -15,26 +15,7 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String a[]) throws InterruptedException {
-        int numberOfDigits = 1_000;
-        int numberOfThreads = 4;
-        int range = numberOfDigits / numberOfThreads;
-        ArrayList<PiThreads> threads = new ArrayList<PiThreads>();
-        for (int i = 0; i < numberOfThreads ; i++ ){
-            int startNumber = i * numberOfDigits;
-            threads.add(new PiThreads(startNumber, range));
-        }
-
-        for (int i = 0; i < numberOfThreads ; i++){
-            threads.get(i).start();
-        }
-
-        for(PiThreads t : threads){
-            t.join();
-        }
-
-        for (int i = 0; i < numberOfThreads ; i++){
-            System.out.println(bytesToHex(threads.get(i).getDigits()));
-        }
+        System.out.println("LA RESPUESTA ES: " + bytesToHex(PiDigits.getDigits(1000, 4, 1)));
     }
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
