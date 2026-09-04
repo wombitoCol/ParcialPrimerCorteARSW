@@ -5,6 +5,7 @@
  */
 package edu.eci.arsw.math;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -13,10 +14,27 @@ import java.util.Arrays;
  */
 public class Main {
 
-    public static void main(String a[]) {
-        System.out.println(bytesToHex(PiDigits.getDigits(0, 10)));
-        System.out.println(bytesToHex(PiDigits.getDigits(1, 100)));
-        System.out.println(bytesToHex(PiDigits.getDigits(1, 1000000)));
+    public static void main(String a[]) throws InterruptedException {
+        int numberOfDigits = 1_000;
+        int numberOfThreads = 4;
+        int range = numberOfDigits / numberOfThreads;
+        ArrayList<PiThreads> threads = new ArrayList<PiThreads>();
+        for (int i = 0; i < numberOfThreads ; i++ ){
+            int startNumber = i * numberOfDigits;
+            threads.add(new PiThreads(startNumber, range));
+        }
+
+        for (int i = 0; i < numberOfThreads ; i++){
+            threads.get(i).start();
+        }
+
+        for(PiThreads t : threads){
+            t.join();
+        }
+
+        for (int i = 0; i < numberOfThreads ; i++){
+            System.out.println(bytesToHex(threads.get(i).getDigits()));
+        }
     }
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
